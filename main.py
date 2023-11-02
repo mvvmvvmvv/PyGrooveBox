@@ -125,6 +125,32 @@ while run:
         play_text2 = medium_font.render('Paused', True, dark_gray)
     screen.blit(play_text2, (70, HEIGHT - 100))
 
+    # BPM display
+    bpm_rect = pygame.draw.rect(screen, gray, [300, HEIGHT - 150, 200, 100], 5, 5)
+    bpm_text = medium_font.render('BPM', True, white)
+    screen.blit(bpm_text, (370, HEIGHT - 130))
+    bpm_text2 = label_font.render(f'{bpm}', True, white)
+    screen.blit(bpm_text2, (370, HEIGHT - 100))
+    bpm_add_rect = pygame.draw.rect(screen, gray, [510, HEIGHT - 150, 48, 48], 0, 5)
+    bpm_sub_rect = pygame.draw.rect(screen, gray, [510, HEIGHT - 100, 48, 48], 0, 5)
+    add_text = medium_font.render('+5', True, white)
+    sub_text = medium_font.render('-5', True, white)
+    screen.blit(add_text, (520, HEIGHT - 140))
+    screen.blit(sub_text, (520, HEIGHT - 90))
+
+    # Beats
+    beats_rect = pygame.draw.rect(screen, gray, [600, HEIGHT - 150, 200, 100], 5, 5)
+    beats_text = medium_font.render('Beats In Loop', True, white)
+    screen.blit(beats_text, (618, HEIGHT - 130))
+    beats_text2 = label_font.render(f'{beats}', True, white)
+    screen.blit(beats_text2, (680, HEIGHT - 100))
+    beats_add_rect = pygame.draw.rect(screen, gray, [810, HEIGHT - 150, 48, 48], 0, 5)
+    beats_sub_rect = pygame.draw.rect(screen, gray, [810, HEIGHT - 100, 48, 48], 0, 5)
+    add_text2 = medium_font.render('+1', True, white)
+    sub_text2 = medium_font.render('-1', True, white)
+    screen.blit(add_text2, (820, HEIGHT - 140))
+    screen.blit(sub_text2, (820, HEIGHT - 90))
+
     if beat_changed:
         play_notes()
         beat_changed = False
@@ -143,6 +169,18 @@ while run:
                     playing = False
                 elif not playing:
                     playing = True
+            elif bpm_add_rect.collidepoint(event.pos):
+                bpm += 5
+            elif bpm_sub_rect.collidepoint(event.pos):
+                bpm -= 5
+            elif beats_add_rect.collidepoint(event.pos):
+                beats += 1
+                for i in range(len(clicked)):
+                    clicked[i].append(-1)
+            elif beats_sub_rect.collidepoint(event.pos):
+                beats -= 1
+                for i in range(len(clicked)):
+                    clicked[i].pop(-1)
 
     beat_length = (fps * 60) // bpm
 
